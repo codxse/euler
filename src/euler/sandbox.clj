@@ -1,4 +1,5 @@
 (ns euler.sandbox)
+(in-ns 'euler.sandbox)
 
 (def fac1
   "Contoh penamaan function anonimus."
@@ -45,3 +46,18 @@
   to collection of arguments and then unpack it."
   [this these & those]
   (apply print this these those))
+
+
+;;;;;;;;;;;;;;;;;;
+;;; namespaces ;;;
+;;;;;;;;;;;;;;;;;;
+
+(require 'clojure.set)
+
+(clojure.set/union #{1 2 3} #{1 2})
+
+;; or
+
+(require '[clojure.set :as set])
+
+(set/union #{1 2 3} #{1 2})
