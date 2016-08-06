@@ -143,3 +143,32 @@
 (set/difference #{:a :b} #{:a})
 
 (set/intersection #{:a :b :c} #{:d :b :e})
+
+;; destructuring
+
+(def stuff [1 2 3 4 5])
+
+;; bind a b c to first three value in stuff
+(let [[a b c] stuff]
+  (list (+ a b) (+ b c)))
+
+;; bind a b c d e f to stuff
+(let [[a b c d e f] stuff]
+  (list d e f))
+
+(let [[a & others] stuff]
+  (println a)
+  (println others))
+
+(def m {:a 1 :b 2})
+
+(let [{:keys [a b]} m]
+  [a b])
+
+(let [{:keys [a b c]} m]
+  [a b c])
+
+(defn draw-point
+  [& {:keys [a b c]
+      :or {a 0 b 0 c 0}}]
+  [a b c])
