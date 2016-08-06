@@ -124,3 +124,22 @@
 ;; instead update the value, update-in update with
 ;; function that passed
 (update-in jdoe [:address :zip] inc)
+
+;; set
+
+#{}
+
+#{:a :b}
+
+(conj #{} :a)
+
+;; evaluate to true
+(contains? #{:a} :a)
+
+(require '[clojure.set :as set])
+
+(set/union #{:a} #{:b})
+
+(set/difference #{:a :b} #{:a})
+
+(set/intersection #{:a :b :c} #{:d :b :e})
