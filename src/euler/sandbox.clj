@@ -1,5 +1,6 @@
-(ns euler.sandbox)
-(in-ns 'euler.sandbox)
+(ns euler.sandbox
+  (:require [clojure.set :as set])
+  (:use [clojure.string :only [join]]))
 
 (def fac1
   "Contoh penamaan function anonimus."
@@ -61,3 +62,65 @@
 (require '[clojure.set :as set])
 
 (set/union #{1 2 3} #{1 2})
+
+(require '[clojure.string :as str :only [join]])
+
+;;;;;;;;;;;;;;;;;;;
+;;; collections ;;;
+;;;;;;;;;;;;;;;;;;;
+
+;; list
+
+(list 1 2 3)
+
+(quote (1 2 3))
+
+'(1 2 3)
+
+(conj '(1 2) 0)
+
+;; vector
+
+[1 2 3]
+
+(vector 1 2 3)
+
+(def vectr (vec '(1 2 3)))
+
+(nth [1 2 3] 0)
+
+(conj vectr '(12 13))
+
+;; map
+
+{}
+
+{:a 1 :b 2}
+
+;; access by its key
+(:a {:a 1 :b 2})
+
+({:a 1 :b 2} :a)
+
+;; add another key-val
+(assoc {:a 1} :b 2)
+
+;; pop by key
+(dissoc {:a 1} :a)
+
+;; convert vector to map
+(conj {} [:a 1])
+
+;; nested map
+
+(def jdoe {:name "Jhon Doe" :address {:zip 44185}})
+
+;; get value by key
+(get-in jdoe [:address :zip])
+
+;; update value by its key
+(assoc-in jdoe [:address :zip] 40135)
+
+;; instead update the value, update-in update with
+;; function that passed
+(update-in jdoe [:address :zip] inc)
