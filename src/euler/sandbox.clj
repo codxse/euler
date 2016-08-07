@@ -237,3 +237,40 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; recurssion and itteration ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; iterate over sequence
+;; similiar to java foreach
+;; if laze-seq doseq force evaluation
+(doseq [n (range 3)]
+  (println n))
+
+;; evaluate expression n times
+(dotimes [i 3]
+  (println i))
+
+;; list comperhenssion, not for-loop
+;; generator function for sequence permutation
+(for [x [0 1]
+      y [0 1]]
+  [x y])
+
+;; functional looping construct
+;; loop defines bindings
+;; recur re-excecutes loop with new binding
+(loop [i 0]
+  (if (< i 10)
+    (recur (inc i))
+    i))
+
+(defn to-ten
+  [i]
+  (if (< i 10)
+    (recur (inc i))
+    i))
+
+(defn factorial
+  ([n] (factorial 1 n))
+  ([accum n]
+   (if (zero? n)
+     accum
+     (recur (*' accum n) (dec n)))))
