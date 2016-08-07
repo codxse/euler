@@ -144,7 +144,9 @@
 
 (set/intersection #{:a :b :c} #{:d :b :e})
 
-;; destructuring
+;;;;;;;;;;;;;;;;;;;;;
+;;; destructuring ;;;
+;;;;;;;;;;;;;;;;;;;;;
 
 (def stuff [1 2 3 4 5])
 
@@ -172,3 +174,66 @@
   [& {:keys [a b c]
       :or {a 0 b 0 c 0}}]
   [a b c])
+
+;;;;;;;;;;;;;;;;;;;;
+;;; sequence api ;;;
+;;;;;;;;;;;;;;;;;;;;
+
+(seq [1 2 3])
+
+(first (seq [1 2 3]))
+
+(rest (seq [1 2 3]))
+
+(cons 1 (rest (seq [1 2 3])))
+
+;; fibonachi sequence
+
+(defn gen-fib
+  "generate fibonachi sequences."
+  [a b]
+  (map first
+       (iterate
+         #(into [] [(second %) (+ (first %) (second %))])
+         [a b])))
+
+(def fibs
+  (map first
+       (iterate
+         (fn [[a b]] [b (+ a b)])
+         [0 1])))
+
+;;;;;;;;;;;;;;;;;;;;;
+;;; controll flow ;;;
+;;;;;;;;;;;;;;;;;;;;;
+
+(defn show-evens
+  [coll]
+  (if-let [evens (seq (filter even? coll))]
+    (println (str "the evens are: " evens))
+    (println "there were no evens.")))
+
+(defn grather-than-10?
+  [x]
+  (cond
+    (> x 10) (str x " is grather then 10")
+    (> x 5) (str x " is grather then 5")
+    :else "no man sky."))
+
+(defn is10p?
+  [x]
+  (condp = x
+    10 (str x " is 10")
+    5 (str x " is 5")
+    "no man sky."))
+
+(defn is10c?
+  [x]
+  (case x
+    10 (str x " is 10")
+    5 (str x " is 5")
+    "no man sky."))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; recurssion and itteration ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
