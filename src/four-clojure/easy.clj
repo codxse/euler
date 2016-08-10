@@ -64,3 +64,49 @@
 (= (new-count '(13)) 1)
 
 (= (new-count '(:a :b :c)) 3)
+
+;; 23. reverse a sequence
+(defn new-reverse
+  "Return reversed coll."
+  ([coll] (new-reverse coll '()))
+  ([coll reverse-coll]
+   (if (empty? coll)
+     reverse-coll
+     (recur (rest coll)
+            (conj (seq reverse-coll) (first coll))))))
+
+(= (new-reverse [1 2 3 4 5]) [5 4 3 2 1])
+
+(= (new-reverse (sorted-set 5 7 2 7)) '(7 5 2))
+
+(= (new-reverse [[1 2][3 4][5 6]]) [[5 6][3 4][1 2]])
+
+;; 24. sum it up
+(defn sum
+  "Sum it up."
+  [coll]
+  (reduce + coll))
+
+(= (sum [1 2 3]) 6)
+
+(= (sum (list 0 -2 5 5)) 8)
+
+(= (sum #{4 2 1}) 7)
+
+(= (sum '(0 0 -1)) -1)
+
+(= (sum '(1 10 3)) 14)
+
+;; 25. find odd number
+(defn filter-odd
+  "Return odd list with odd value only."
+  [coll]
+  (filter odd? coll))
+
+(= (filter-odd #{1 2 3 4 5}) '(1 3 5))
+
+(= (filter-odd [4 2 1 6]) '(1))
+
+(= (filter-odd [2 2 4 6]) '())
+
+(= (filter-odd [1 1 1 3]) '(1 1 1 3))
