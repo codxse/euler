@@ -274,3 +274,15 @@
    (if (zero? n)
      accum
      (recur (*' accum n) (dec n)))))
+
+(defn sum
+  [coll]
+  (reduce + (seq coll)))
+
+(defn sum-of-range
+  [from to]
+  (let [ran (range from to)
+        n (inc (count ran))]
+    (* (* n 0.5)
+       (+ (first ran)
+          (inc (last ran))))))
