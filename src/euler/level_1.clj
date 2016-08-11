@@ -26,3 +26,22 @@
 
 (= 233168 (reduce + (gen35 1000)))
 (= 233168 (reduce + (filter gen35? (range 1 1000))))
+
+;; problem no. 2
+(defn fib-next
+  "Generate element of fibonachi sequence."
+  [coll]
+  (let [f (first coll)
+        l (last coll)]
+    [l (+ f l)]))
+
+(defn fibonachi
+  "Generate lazy fibonachi sequence."
+  [coll]
+  (map first (iterate fib-next coll)))
+
+(= 4613732
+   (reduce +
+           (filter even?
+                   (take-while #(< % (* 4 1000 1000))
+                               (fibonachi [1 2])))))

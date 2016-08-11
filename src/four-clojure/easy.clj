@@ -110,3 +110,19 @@
 (= (filter-odd [2 2 4 6]) '())
 
 (= (filter-odd [1 1 1 3]) '(1 1 1 3))
+
+;; 27. palindrome detector
+(defn palindrome?
+  "Return true if palindrome."
+  [coll]
+  (= (seq coll) (seq (reverse coll))))
+
+(false? (palindrome? '(1 2 3 4 5)))
+
+(true? (palindrome? "racecar"))
+
+(true? (palindrome? [:foo :bar :foo]))
+
+(true? (palindrome? '(1 1 3 3 1 1)))
+
+(false? (palindrome? '(:a :b :c)))
