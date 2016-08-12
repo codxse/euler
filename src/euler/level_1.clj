@@ -48,10 +48,13 @@
 
 ;; problem no. 3
 (defn sqrt-ceil
+  "Let sqrt of 2 is 1.413...,
+  sqrt-ceil will round up 1.413... to 2."
   [x]
   (int (Math/ceil (Math/sqrt x))))
 
 (defn prime?
+  "Return true if x is prime."
   ([x] (prime? x (sqrt-ceil x)))
   ([x iterator]
    (cond
@@ -62,6 +65,7 @@
      :else (recur x (dec iterator)))))
 
 (defn prime-factor
+  "Return sequence of prime factor of x."
   [x]
   (let [s (sqrt-ceil x)
         p (filter prime? (range 1 s))]

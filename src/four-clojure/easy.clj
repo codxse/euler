@@ -55,15 +55,23 @@
       0
       (+ 1 (new-count (rest s))))))
 
-(= (new-count '(1 2 3 3 1)) 5)
+(defn rec-count
+  "Count element using recur."
+  ([coll] (rec-count (seq coll) 0))
+  ([coll iterator]
+   (if (empty? coll)
+     iterator
+     (recur (rest coll) (inc iterator)))))
 
-(= (new-count "Hello World") 11)
+(= (rec-count '(1 2 3 3 1)) 5)
 
-(= (new-count [[1 2] [3 4] [5 6]]) 3)
+(= (rec-count "Hello World") 11)
 
-(= (new-count '(13)) 1)
+(= (rec-count [[1 2] [3 4] [5 6]]) 3)
 
-(= (new-count '(:a :b :c)) 3)
+(= (rec-count '(13)) 1)
+
+(= (rec-count '(:a :b :c)) 3)
 
 ;; 23. reverse a sequence
 (defn new-reverse
@@ -126,3 +134,4 @@
 (true? (palindrome? '(1 1 3 3 1 1)))
 
 (false? (palindrome? '(:a :b :c)))
+
