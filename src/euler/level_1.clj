@@ -45,3 +45,26 @@
            (filter even?
                    (take-while #(< % (* 4 1000 1000))
                                (fibonachi [1 2])))))
+
+;; problem no. 3
+(defn sqrt-ceil
+  [x]
+  (int (Math/ceil (Math/sqrt x))))
+
+(defn prime?
+  ([x] (prime? x (sqrt-ceil x)))
+  ([x iterator]
+   (cond
+     (= 2 x) true
+     (<= x 1) false
+     (= 1 iterator) true
+     (zero? (rem x iterator)) false
+     :else (recur x (dec iterator)))))
+
+(defn prime-factor
+  [x]
+  (let [s (sqrt-ceil x)
+        p (filter prime? (range 1 s))]
+    (filter #(zero? (rem x %)) p)))
+
+(= 6857 (last (prime-factor 600851475143)))
