@@ -119,6 +119,23 @@
 
 (= (filter-odd [1 1 1 3]) '(1 1 1 3))
 
+;; 26. fibonacci sequence
+(defn fibo
+  "Return n fibonacci sequence."
+  [n]
+  (take n (map second
+               (iterate
+                 (fn [x] [(last x)
+                          (+ (first x)
+                             (last x))])
+                 [0 1]))))
+
+(= (fibo 3) '(1 1 2))
+
+(= (fibo 6) '(1 1 2 3 5 8))
+
+(= (fibo 8) '(1 1 2 3 5 8 13 21))
+
 ;; 27. palindrome detector
 (defn palindrome?
   "Return true if palindrome."
@@ -135,3 +152,14 @@
 
 (false? (palindrome? '(:a :b :c)))
 
+;; 38. maximum value
+(defn bf-max
+  "Return max from seq."
+  [& args]
+  (reduce #(if (>= %1 %2) %1 %2) args))
+
+(= (bf-max 1 8 3 4) 8)
+
+(= (bf-max 30 20) 30)
+
+(= (bf-max 45 67 11) 67)
