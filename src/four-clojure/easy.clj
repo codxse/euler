@@ -220,6 +220,22 @@
 
 (= (copy-seq [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
 
+;; 33. replicate a seq
+(defn repseq
+  "Return replicate of seq."
+  [coll n]
+  (apply concat (map #(replicate n %) coll)))
+
+(= (repseq [1 2 3] 2) '(1 1 2 2 3 3))
+
+(= (repseq [:a :b] 4) '(:a :a :a :a :b :b :b :b))
+
+(= (repseq [4 5 6] 1) '(4 5 6))
+
+(= (repseq [[1 2] [3 4]] 2) '([1 2] [1 2] [3 4] [3 4]))
+
+(= (repseq [44 33] 2) [44 44 33 33])
+
 ;; 34. implement range
 (defn new-range
   "Return sequence of range."
@@ -271,7 +287,6 @@
               (first c1)
               (first c2)))
       temp)))
-
 
 (= (new-interleave [1 2 3] [:a :b :c]) '(1 :a 2 :b 3 :c))
 
