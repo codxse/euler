@@ -1,5 +1,6 @@
 (ns four-clojure.easy
-  (:require [clojure.set :as set])
+  (:require [clojure.set :as set]
+            [clojure.string :as str])
   (:use [clojure.repl]))
 
 ;; 19. last element
@@ -151,6 +152,93 @@
 (true? (palindrome? '(1 1 3 3 1 1)))
 
 (false? (palindrome? '(:a :b :c)))
+
+;; 29. get the cap
+(defn get-cap
+  [word]
+  (str/join (re-seq #"[A-Z]+" word)))
+
+(= (get-cap "HeLlO, WoRlD!") "HLOWRD")
+
+(empty? (get-cap "nothing"))
+
+(= (get-cap "$#A(*&987Zf") "AZ")
+
+;; 30. compress a sequence
+(defn compress-seq
+  "Function which removes consecutive duplicates from a sequence."
+  [coll]
+  (loop
+    [c coll
+     t []]
+    (cond
+      (empty? c) t
+      (not= (first c) (last t)) (recur
+                                  (rest c)
+                                  (conj t (first c)))
+      :else (recur
+              (rest c)
+              t))))
+
+(defn compress-seq2
+  "Function which removes consecutive duplicates from a sequence."
+  [coll]
+  (map first (partition-by identity coll)))
+
+(= (compress-seq [1 1 2 3 3 2 2 3]) '(1 2 3 2 3))
+
+(= (apply str (compress-seq "Leeeeeerrroyyy")) "Leroy")
+
+(= (compress-seq [[1 2] [1 2] [3 4] [1 2]]) '([1 2] [3 4] [1 2]))
+
+;; 32. duplicate a sequence
+(defn copy-seq
+  "Return duplicate sequence."
+  ([coll] (copy-seq coll []))
+  ([coll temp]
+    (if (empty? coll)
+      temp
+      (recur (rest coll) (conj temp
+                               (first coll)
+                               (first coll))))))
+
+(defn copy-seq2
+  "Return duplicate sequence."
+  [coll]
+  (sort (concat coll coll)))
+
+(defn copy-seq3
+  "Return duplicate sequence."
+  [coll]
+  (interleave coll coll))
+
+(= (copy-seq [1 2 3]) '(1 1 2 2 3 3))
+
+(= (copy-seq [:a :a :b :b]) '(:a :a :a :a :b :b :b :b))
+
+(= (copy-seq [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
+
+(= (copy-seq [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
+
+;; 34. implement range
+(defn new-range
+  "Return sequence of range."
+  [from to]
+  (loop
+    [start from
+     end to
+     temp []]
+    (if (= start end)
+      (seq temp)
+      (recur (inc start)
+             end
+             (conj temp start)))))
+
+(= (new-range 1 4) '(1 2 3))
+
+(= (new-range -2 2) '(-2 -1 0 1))
+
+(= (new-range 5 8) '(5 6 7))
 
 ;; 38. maximum value
 (defn bf-max
