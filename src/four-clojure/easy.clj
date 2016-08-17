@@ -323,3 +323,63 @@
 (= (factorial2 5) 120)
 
 (= (factorial2 8) 40320)
+
+;; 153. pairwise disjoint set
+(defn disjoint?
+  [set_]
+  (let [set_ (seq set_)
+        len (count set_)]
+    (every? empty?
+            (seq (for [s1 (range len)
+                       s2 (range len)
+                       :when (not= s1 s2)]
+                   (set/intersection
+                     (nth set_ s1)
+                     (nth set_ s2)))))))
+
+(= (disjoint? #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}})
+   true)
+
+(= (disjoint? #{#{:a :b :c :d :e}
+         #{:a :b :c :d}
+         #{:a :b :c}
+         #{:a :b}
+         #{:a}})
+   false)
+
+(= (disjoint? #{#{[1 2 3] [4 5]}
+         #{[1 2] [3 4 5]}
+         #{[1] [2] 3 4 5}
+         #{1 2 [3 4] [5]}})
+   true)
+
+(= (disjoint? #{#{'a 'b}
+         #{'c 'd 'e}
+         #{'f 'g 'h 'i}
+         #{''a ''c ''f}})
+   true)
+
+(= (disjoint? #{#{'(:x :y :z) '(:x :y) '(:z) '()}
+         #{#{:x :y :z} #{:x :y} #{:z} #{}}
+         #{'[:x :y :z] [:x :y] [:z] [] {}}})
+   false)
+
+(= (disjoint? #{#{(= "true") false}
+         #{:yes :no}
+         #{(class 1) 0}
+         #{(symbol "true") 'false}
+         #{(keyword "yes") ::no}
+         #{(class '1) (int \0)}})
+   false)
+
+(= (disjoint? #{#{distinct?}
+         #{#(-> %) #(-> %)}
+         #{#(-> %) #(-> %) #(-> %)}
+         #{#(-> %) #(-> %) #(-> %)}})
+   true)
+
+(= (disjoint? #{#{(#(-> *)) + (quote mapcat) #_ nil}
+         #{'+ '* mapcat (comment mapcat)}
+         #{(do) set contains? nil?}
+         #{, , , #_, , empty?}})
+   false)
