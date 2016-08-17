@@ -251,3 +251,60 @@
 (= (bf-max 30 20) 30)
 
 (= (bf-max 45 67 11) 67)
+
+;; 39. interleave two seq
+(defn new-interleave
+  "A function which takes two sequences
+  and returns the first item from each,
+  then the second item from each,
+  then the third, etc."
+  [coll1 coll2]
+  (loop
+    [c1 coll1
+     c2 coll2
+     temp []]
+    (if (and c1 c2)
+      (recur
+        (next c1)
+        (next c2)
+        (conj temp
+              (first c1)
+              (first c2)))
+      temp)))
+
+
+(= (new-interleave [1 2 3] [:a :b :c]) '(1 :a 2 :b 3 :c))
+
+(= (new-interleave [1 2] [3 4 5 6]) '(1 3 2 4))
+
+(= (new-interleave [1 2 3 4] [5]) [1 5])
+
+(= (new-interleave [30 20] [25 15]) [30 25 20 15])
+
+;; 42. factorial fun
+(defn factorial
+  "Return factorial of n."
+  [n]
+  (if (= n 1)
+    n
+    (* n (factorial (dec n)))))
+
+(defn factorial2
+  "Return factorial of n."
+  [n]
+  (->> (inc n)
+       (range 1)
+       (reduce *)))
+
+(defn factorial21
+  "Return factorial of n"
+  [n]
+  (reduce * (range 1 (inc n))))
+
+(= (factorial2 1) 1)
+
+(= (factorial2 3) 6)
+
+(= (factorial2 5) 120)
+
+(= (factorial2 8) 40320)
