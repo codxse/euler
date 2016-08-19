@@ -296,6 +296,45 @@
 
 (= (new-interleave [30 20] [25 15]) [30 25 20 15])
 
+;; interpose a seq
+(defn interps
+  "A function exactly like interpose."
+  [e coll]
+  (butlast (loop
+             [e e
+              c coll
+              t []]
+             (if c
+               (recur e
+                      (next c)
+                      (conj t (first c) e))
+               t))))
+
+(defn interps2
+  "A function exactly like interpose."
+  [e coll]
+  (butlast (interleave coll (repeat e))))
+
+(= (interps 0 [1 2 3]) [1 0 2 0 3])
+
+(= (apply str (interps ", " ["one" "two" "three"])) "one, two, three")
+
+(= (interps :z [:a :b :c :d]) [:a :z :b :z :c :z :d])
+
+;; 41. drop every nth element
+(defn rm-factor-idx
+  [coll factor]
+    (remove #(zero?(rem
+                     (inc (.indexOf coll %))
+                     factor))
+            coll))
+
+(= (rm-factor-idx [1 2 3 4 5 6 7 8] 3) [1 2 4 5 7 8])
+
+(= (rm-factor-idx [:a :b :c :d :e :f] 2) [:a :c :e])
+
+(= (rm-factor-idx [1 2 3 4 5 6] 4) [1 2 3 5 6])
+
 ;; 42. factorial fun
 (defn factorial
   "Return factorial of n."
