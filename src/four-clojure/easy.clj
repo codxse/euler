@@ -430,6 +430,21 @@
 
 (= false (half-truth false false))
 
+;; 88. symetric difference
+(defn symdiff
+  [set1 set2]
+  (set/difference
+    (set/union set1 set2)
+    (set/intersection set1 set2)))
+
+(= (symdiff #{1 2 3 4 5 6} #{1 3 5 7}) #{2 4 6 7})
+
+(= (symdiff #{:a :b :c} #{}) #{:a :b :c})
+
+(= (symdiff #{} #{4 5 6}) #{4 5 6})
+
+(= (symdiff #{[1 2] [2 3]} #{[2 3] [3 4]}) #{[1 2] [3 4]})
+
 ;; 90. cartesian product
 (defn cartesian-product
   "Return cartesian product from two list."
@@ -506,6 +521,28 @@
 (= 50 (n120 (range 100)))
 
 (= 50 (n120 (range 1000)))
+
+;; 122. read binary number
+(defn bin2dec
+  [binary-string]
+  (let [binary-seq (->> (seq binary-string)
+                        (map str)
+                        (map read-string)
+                        reverse)
+        base (fn [x] (if (zero? x) 0 2))]
+    (->> (map #(* (Math/pow (base %1) %2)
+                  %1)
+              binary-seq (range))
+         (reduce +)
+         int)))
+
+(= 0 (bin2dec "0"))
+
+(= 7 (bin2dec "111"))
+
+(= 8 (bin2dec "1000"))
+
+(= 1365 (bin2dec "10101010101"))
 
 ;; 143. dot product
 (defn dot-product
