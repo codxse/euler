@@ -402,6 +402,21 @@
 
 (= (gcd 1023 858) 33)
 
+;; 81. set intersection
+(defn intersec
+  "Return intersection from two set"
+  [set1 set2]
+  (set (for [s1 set1
+            s2 set2
+            :when (= s1 s2)]
+         s1)))
+
+(= (intersec #{0 1 2 3} #{2 3 4 5}) #{2 3})
+
+(= (intersec #{0 1 2} #{3 4 5}) #{})
+
+(= (intersec #{:a :b :c :d} #{:c :e :a :f :d}) #{:a :c :d})
+
 ;; 83. half truth
 (defn half-truth
   "Return true if some of the parameters are true,
@@ -474,3 +489,20 @@
          #{(do) set contains? nil?}
          #{, , , #_, , empty?}})
    false)
+
+;; 166. comparisons
+(defn compar
+  [f x y]
+  (cond
+    (f x y) :lt
+    (f y x) :gt
+    :else :eq))
+
+
+(= :gt (compar < 5 1))
+
+(= :eq (compar (fn [x y] (< (count x) (count y))) "pear" "plum"))
+
+(= :lt (compar (fn [x y] (< (mod x 5) (mod y 5))) 21 3))
+
+(= :gt (compar > 0 2))
