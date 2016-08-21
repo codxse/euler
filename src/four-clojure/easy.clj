@@ -323,6 +323,7 @@
 
 ;; 41. drop every nth element
 (defn rm-factor-idx
+  "Return seq from droped every nth element."
   [coll factor]
     (remove #(zero?(rem
                      (inc (.indexOf coll %))
@@ -362,6 +363,57 @@
 (= (factorial2 5) 120)
 
 (= (factorial2 8) 40320)
+
+;; 49. split a sequence
+(defn split-seq
+  "Return two part of seq, splited by n"
+  [n coll]
+  (conj []
+        (take n coll)
+        (drop n coll)))
+
+(= (split-seq 3 [1 2 3 4 5 6]) [[1 2 3] [4 5 6]])
+
+(= (split-seq 1 [:a :b :c :d]) [[:a] [:b :c :d]])
+
+(= (split-seq 2 [[1 2] [3 4] [5 6]]) [[[1 2] [3 4]] [[5 6]]])
+
+;; 61. map contruction
+(defn map-con
+  "Return map construction"
+  [coll1 coll2]
+  (apply hash-map (interleave coll1 coll2)))
+
+(= (map-con [:a :b :c] [1 2 3]) {:a 1, :b 2, :c 3})
+
+;; 66. gcd
+(defn gcd
+  "Return GCD from two number."
+  [x y]
+  (if (zero? y)
+    x
+    (recur y (rem x y))))
+
+(= (gcd 2 4) 2)
+
+(= (gcd 10 5) 5)
+
+(= (gcd 5 7) 1)
+
+(= (gcd 1023 858) 33)
+
+;; 83. half truth
+(defn half-truth
+  "Return true if some of the parameters are true,
+  but not all of the parameters are true."
+  [& a]
+  (if (every? true? a)
+    false
+    (if (some true? a)
+      true
+      false)))
+
+(= false (half-truth false false))
 
 ;; 153. pairwise disjoint set
 (defn disjoint?
