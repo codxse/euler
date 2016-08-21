@@ -441,6 +441,16 @@
 (= (cartesian-product #{1 2 3} #{4 5})
    #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]})
 
+;; 99. product digit
+(defn n99
+  [x y]
+  (->> (* x y)
+       str seq
+       (map str)
+       (map read-string)))
+
+(= (n99 999 99) [9 8 9 0 1])
+
 ;; 120. sum of equare of digits
 (defn num2digit
   "Return seq of digit from number.
@@ -556,6 +566,16 @@
          #{'f 'g 'h 'i}
          #{''a ''c ''f}})
    true)
+
+;; 157. indexing sequence
+(defn n157
+  "Return seq of e with their index."
+  [col]
+  (map list col (range)))
+
+(= (n157 [:a :b :c]) [[:a 0] [:b 1] [:c 2]])
+
+(= (n157 [[:foo] {:bar :baz}]) [[[:foo] 0] [{:bar :baz} 1]])
 
 ;; 166. comparisons
 (defn compar
