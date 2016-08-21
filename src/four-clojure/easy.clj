@@ -430,6 +430,98 @@
 
 (= false (half-truth false false))
 
+;; 90. cartesian product
+(defn cartesian-product
+  "Return cartesian product from two list."
+  [col1 col2]
+  (set (for [c1 col1
+             c2 col2]
+         [c1 c2])))
+
+(= (cartesian-product #{1 2 3} #{4 5})
+   #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]})
+
+;; 120. sum of equare of digits
+(defn num2digit
+  "Return seq of digit from number.
+  ex. 120 -> (1 2 0)."
+  [x]
+  (->> (str x)
+       (seq)
+       (map str)
+       (map read-string)))
+
+(defn sqdigit
+  "Return sequared number of seq.
+  ex. (1 2 0) -> (1 4 0)."
+  [x]
+  (reduce + (map #(* % %)
+                 (num2digit x))))
+
+(defn st-sqdigit?
+  "Return true if x is smaller than square digit.
+  ex. 10 -> false, coz (< 10 (+ (sqrt 1) (sqrt 0)))."
+  [x]
+  (if (< x (sqdigit x))
+    true
+    false))
+
+(defn n120
+  "Return count element of st-digit?."
+  [col]
+  (count (filter st-sqdigit? col)))
+
+(defn long120
+  "Return count element of st-digit?."
+  [col]
+  (let [num2digit (fn [x]
+                    (->> (str x)
+                         (seq)
+                         (map str)
+                         (map read-string)))
+        sqdigit (fn [x]
+                  (->> (num2digit x)
+                       (map #(* % %))
+                       (reduce +)))
+        st-sqdigit? (fn [x]
+                      (if (< x (sqdigit x))
+                        true
+                        false))]
+    (count (filter st-sqdigit? col))))
+
+(= 8 (n120 (range 10)))
+
+(= 19 (n120 (range 30)))
+
+(= 50 (n120 (range 100)))
+
+(= 50 (n120 (range 1000)))
+
+;; 143. dot product
+(defn dot-product
+  "Return dot product from two collections."
+  [col1 col2]
+  (->> (map * col1 col2)
+       (apply +)))
+
+(defn dot-product2
+  "Recrusive dot product."
+  [col1 col2]
+  (loop
+    [c1 col1
+     c2 col2
+     p 0]
+    (if (empty? c1)
+      p
+      (recur (rest c1)
+             (rest c2)
+             (+ p (* (first c1)
+                     (first c2)))))))
+
+(= 0 (dot-product [0 1 0] [1 0 0]))
+
+(= 3 (dot-product [1 1 1] [1 1 1]))
+
 ;; 153. pairwise disjoint set
 (defn disjoint?
   [set_]
@@ -464,31 +556,6 @@
          #{'f 'g 'h 'i}
          #{''a ''c ''f}})
    true)
-
-(= (disjoint? #{#{'(:x :y :z) '(:x :y) '(:z) '()}
-         #{#{:x :y :z} #{:x :y} #{:z} #{}}
-         #{'[:x :y :z] [:x :y] [:z] [] {}}})
-   false)
-
-(= (disjoint? #{#{(= "true") false}
-         #{:yes :no}
-         #{(class 1) 0}
-         #{(symbol "true") 'false}
-         #{(keyword "yes") ::no}
-         #{(class '1) (int \0)}})
-   false)
-
-(= (disjoint? #{#{distinct?}
-         #{#(-> %) #(-> %)}
-         #{#(-> %) #(-> %) #(-> %)}
-         #{#(-> %) #(-> %) #(-> %)}})
-   true)
-
-(= (disjoint? #{#{(#(-> *)) + (quote mapcat) #_ nil}
-         #{'+ '* mapcat (comment mapcat)}
-         #{(do) set contains? nil?}
-         #{, , , #_, , empty?}})
-   false)
 
 ;; 166. comparisons
 (defn compar
