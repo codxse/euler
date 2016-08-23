@@ -153,6 +153,16 @@
 
 (false? (palindrome? '(:a :b :c)))
 
+;; 28. flatten a sequence
+(defn flatten2
+  [col]
+  (if (coll? col)
+    (mapcat flatten2 col)
+    [col]))
+
+
+(= (flatten2 '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
+
 ;; 29. get the cap
 (defn get-cap
   [word]
