@@ -396,6 +396,25 @@
 
 (= (map-con [:a :b :c] [1 2 3]) {:a 1, :b 2, :c 3})
 
+;; 63. group a sequence
+(defn grup-by2
+  [f coll]
+  (let [keys (distinct (map f coll))
+        n (count keys)]
+    (->> (for [k keys
+               c coll
+               :when (= k (f c))]
+           c)
+         (partition-by f)
+         (interleave keys)
+         (apply hash-map))))
+
+
+(= (grup-by2 #(> % 5) [1 3 6 8]) {false [1 3], true [6 8]})
+
+(= (grup-by2 count [[1] [1 2] [3] [1 2 3] [2 3]])
+   {1 [[1] [3]], 2 [[1 2] [2 3]], 3 [[1 2 3]]})
+
 ;; 66. gcd
 (defn gcd
   "Return GCD from two number."
