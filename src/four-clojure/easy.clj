@@ -573,6 +573,20 @@
 
 (= 1365 (bin2dec "10101010101"))
 
+;; 135. infix calculator
+(defn infix-clac
+  "Return result of operation from infix notation."
+  [n f & re]
+  (if (empty? re)
+    n
+    (recur (f n (first re))
+           (second re)
+           (drop 2 re))))
+
+(= 42 (infix-clac 38 + 48 - 2 / 2))
+
+(= 72 (infix-clac 20 / 2 + 2 + 4 + 8 - 6 - 10 * 9))
+
 ;; 143. dot product
 (defn dot-product
   "Return dot product from two collections."
