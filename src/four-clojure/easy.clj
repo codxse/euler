@@ -396,6 +396,18 @@
 
 (= (map-con [:a :b :c] [1 2 3]) {:a 1, :b 2, :c 3})
 
+;; 62. re-implement iterate
+(defn iter2
+  [f x]
+  (lazy-seq (cons x
+                  (iter2 f (f x)))))
+
+(= (take 5 (iter2 #(* 2 %) 1)) [1 2 4 8 16])
+
+(= (take 100 (iter2 inc 0)) (take 100 (range)))
+
+(= (take 9 (iter2 #(inc (mod % 3)) 1)) (take 9 (cycle [1 2 3])))
+
 ;; 63. group a sequence
 (defn grup-by2
   [f coll]
