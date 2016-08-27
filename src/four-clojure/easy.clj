@@ -507,6 +507,18 @@
 
 (= (n99 999 99) [9 8 9 0 1])
 
+;; 107. simple closures
+(defn ho
+  [power]
+  #(int (Math/pow % power)))
+
+(= [1 8 27 64] (map (ho 3) [1 2 3 4]))
+
+(= 256 ((ho 2) 16),
+   ((ho 8) 2))
+
+(= [1 2 4 8 16] (map #((ho %) 2) [0 1 2 3 4]))
+
 ;; 120. sum of equare of digits
 (defn num2digit
   "Return seq of digit from number.
