@@ -519,6 +519,46 @@
 
 (= [1 2 4 8 16] (map #((ho %) 2) [0 1 2 3 4]))
 
+;; 118. re-implement map
+(defn map2
+  [f coll]
+  (if (seq coll)
+    (cons (f (first coll))
+          (lazy-seq (map2 f (next coll))))))
+
+;; not pass unit test
+(defn map3
+  [f coll]
+  (loop
+    [c coll
+     t []]
+    (if (empty? c)
+      t
+      (recur (rest c)
+             (conj t (f (first c)))))))
+
+;; not pas unit test
+(defn map4
+  [f coll]
+  (let
+    [g (fn
+         [f c]
+         (cons (f (first c))
+               (lazy-seq (map4 f (rest c)))))
+     n (count coll)]
+    (take n (g f coll))))
+
+(= [3 4 5 6 7]
+   (map2 inc [2 3 4 5 6]))
+
+(= (repeat 10 nil)
+   (map2 (fn [_] nil) (range 10)))
+
+(= [1000000 1000001]
+   (->> (map2 inc (range))
+        (drop (dec 1000000))
+        (take 2)))
+
 ;; 120. sum of equare of digits
 (defn num2digit
   "Return seq of digit from number.
