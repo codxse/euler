@@ -497,6 +497,17 @@
 (= (cartesian-product #{1 2 3} #{4 5})
    #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]})
 
+;; 95. to tree or not tree
+
+(defn tree?
+  [s]
+  (let [fs (vec (flatten s))]
+    (if (contains? fs (.indexOf fs false))
+      false
+      (#(odd? (count %)) fs))))
+
+(tree? [1 [2 [3 [4 false nil] nil] nil] nil])
+
 ;; 97. pascal triangle
 (defn pascal
   [x]
