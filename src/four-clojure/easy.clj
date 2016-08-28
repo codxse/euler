@@ -497,6 +497,65 @@
 (= (cartesian-product #{1 2 3} #{4 5})
    #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]})
 
+;; 97. pascal triangle
+(defn pascal
+  [x]
+  (iterate (fn
+             [y]
+             [(last y) (+ (first y)
+                           (last y))]) x))
+
+(map count (vals (group-by identity (for [x [1 2]
+                                          y [1 2]
+                                          z [1 2]]
+                                      (+ x y z)))))
+
+(->> (for [x [1 2]
+           y [1 2]
+           z [1 2]
+           a [1 2]]
+       (+ x y z a))
+     (group-by identity)
+     (vals)
+     (map count))
+
+(defn nk
+  [vec-of-nk]
+  (let [fak (fn [n]
+              (let [s (map inc (range n))]
+                (apply * s)))]
+    (quot (fak (first vec-of-nk))
+          (* (fak (second vec-of-nk))
+             (fak (- (first vec-of-nk)
+                     (second vec-of-nk)))))))
+
+(defn pascal
+  [i]
+  (let [nk (fn nk
+             [vec-of-nk]
+             (let [fak (fn [n]
+                         (let [s (map inc (range n))]
+                           (apply * s)))]
+               (quot (fak (first vec-of-nk))
+                     (* (fak (second vec-of-nk))
+                        (fak (- (first vec-of-nk)
+                                (second vec-of-nk)))))))
+        vn (take i
+                 (map #(vec [(dec i) %])
+                      (range)))]
+    (map nk vn)))
+
+
+(= (map pascal (range 1 6))
+   [[1]
+    [1 1]
+    [1 2 1]
+    [1 3 3 1]
+    [1 4 6 4 1]])
+
+(= (pascal 11)
+   [1 10 45 120 210 252 210 120 45 10 1])
+
 ;; 99. product digit
 (defn n99
   [x y]
