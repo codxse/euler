@@ -206,11 +206,11 @@
   "Return duplicate sequence."
   ([coll] (copy-seq coll []))
   ([coll temp]
-    (if (empty? coll)
-      temp
-      (recur (rest coll) (conj temp
-                               (first coll)
-                               (first coll))))))
+   (if (empty? coll)
+     temp
+     (recur (rest coll) (conj temp
+                              (first coll)
+                              (first coll))))))
 
 (defn copy-seq2
   "Return duplicate sequence."
@@ -335,10 +335,10 @@
 (defn rm-factor-idx
   "Return seq from droped every nth element."
   [coll factor]
-    (remove #(zero?(rem
-                     (inc (.indexOf coll %))
-                     factor))
-            coll))
+  (remove #(zero?(rem
+                   (inc (.indexOf coll %))
+                   factor))
+          coll))
 
 (= (rm-factor-idx [1 2 3 4 5 6 7 8] 3) [1 2 4 5 7 8])
 
@@ -448,8 +448,8 @@
   "Return intersection from two set"
   [set1 set2]
   (set (for [s1 set1
-            s2 set2
-            :when (= s1 s2)]
+             s2 set2
+             :when (= s1 s2)]
          s1)))
 
 (= (intersec #{0 1 2 3} #{2 3 4 5}) #{2 3})
@@ -514,7 +514,7 @@
   (iterate (fn
              [y]
              [(last y) (+ (first y)
-                           (last y))]) x))
+                          (last y))]) x))
 
 (map count (vals (group-by identity (for [x [1 2]
                                           y [1 2]
@@ -576,6 +576,60 @@
        (map read-string)))
 
 (= (n99 999 99) [9 8 9 0 1])
+
+;; 100. lcm
+(defn lcm
+  [a b]
+  (let [gcd (fn
+              [x y]
+              (if (zero? y)
+                x
+                (recur y (rem x y))))]
+    (/ (* a b)
+       (gcd a b))))
+
+(defn lcm2
+  [& rest]
+  (reduce lcm rest))
+
+(defn lcm3
+  [& rest]
+  (let [lcm  (fn
+              [a b]
+              (let [gcd (fn
+                          [x y]
+                          (if (zero? y)
+                            x
+                            (recur y (rem x y))))]
+                (/ (* a b)
+                   (gcd a b))))]
+    (reduce lcm rest)))
+
+(defn lcm4
+  [& rest]
+  (let [g (fn [x y]
+              (if (zero? y)
+                x
+                (recur y (rem x y))))]
+    (reduce #(/ (* %1 %2)
+                (g %1 %2)) rest)))
+
+(== (lcm4 2 3) 6)
+
+(== (lcm4 5 3 7) 105)
+
+(== (lcm4 7 5/7 2 3/5) 210)
+
+(== (lcm4 1/3 2/5) 2)
+
+(== (lcm4 3/4 1/6) 3/2)
+
+(defn gcd
+  "Return GCD from two number."
+  [x y]
+  (if (zero? y)
+    x
+    (recur y (rem x y))))
 
 ;; 107. simple closures
 (defn ho
@@ -763,22 +817,22 @@
    true)
 
 (= (disjoint? #{#{:a :b :c :d :e}
-         #{:a :b :c :d}
-         #{:a :b :c}
-         #{:a :b}
-         #{:a}})
+                #{:a :b :c :d}
+                #{:a :b :c}
+                #{:a :b}
+                #{:a}})
    false)
 
 (= (disjoint? #{#{[1 2 3] [4 5]}
-         #{[1 2] [3 4 5]}
-         #{[1] [2] 3 4 5}
-         #{1 2 [3 4] [5]}})
+                #{[1 2] [3 4 5]}
+                #{[1] [2] 3 4 5}
+                #{1 2 [3 4] [5]}})
    true)
 
 (= (disjoint? #{#{'a 'b}
-         #{'c 'd 'e}
-         #{'f 'g 'h 'i}
-         #{''a ''c ''f}})
+                #{'c 'd 'e}
+                #{'f 'g 'h 'i}
+                #{''a ''c ''f}})
    true)
 
 ;; 157. indexing sequence
