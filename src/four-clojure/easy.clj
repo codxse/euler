@@ -800,6 +800,17 @@
 
 (= 3 (dot-product [1 1 1] [1 1 1]))
 
+;; 147. pascal's trapezoid
+
+(defn pascal-trapezoid
+  [coll]
+  (lazy-seq (cons coll
+                  (pascal-trapezoid
+                    (let [c (concat [0] coll [0])]
+                      (map #(+' % %2) c (rest c)))))))
+
+(= (take 2 (pascal-trapezoid [3 1 2])) [[3 1 2] [3 4 3 2]])
+
 ;; 153. pairwise disjoint set
 (defn disjoint?
   [set_]
@@ -861,3 +872,12 @@
 (= :lt (compar (fn [x y] (< (mod x 5) (mod y 5))) 21 3))
 
 (= :gt (compar > 0 2))
+
+;; 173. intro to destructuring 2
+
+(= 3
+   (let [[x y] [+ (range 3)]] (apply x y))
+   (let [[[x y] b] [[+ 1] 2]] (x y b))
+   (let [[x y] [inc 2]] (x y)))
+
+
