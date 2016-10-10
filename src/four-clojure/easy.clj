@@ -374,6 +374,40 @@
 
 (= (factorial2 8) 40320)
 
+;; 43. reverse interleave
+
+(defn n43
+  [s n]
+  (->> (partition n s)
+       (apply map vector)))
+
+
+(= (n43 [1 2 3 4 5 6] 2) '((1 3 5) (2 4 6)))
+
+;; 44. rotate sequence
+
+(defn n44
+  [n s]
+  (let [p (rem n (count s))
+        q (+ (count s) p)
+        c concat]
+    (if (pos? p)
+      (c (drop p s) (take p s))
+      (c (drop q s) (take q s)))))
+
+(= (n44 2 [1 2 3 4 5]) '(3 4 5 1 2))
+
+(= (n44 -2 [1 2 3 4 5]) '(4 5 1 2 3))
+
+;; 46. flipping out
+(defn n46
+  [f]
+  (fn [x y]
+    (f y x)))
+
+
+(= 3 ((n46 nth) 2 [1 2 3 4 5]))
+
 ;; 49. split a sequence
 (defn split-seq
   "Return two part of seq, splited by n"
@@ -387,6 +421,47 @@
 (= (split-seq 1 [:a :b :c :d]) [[:a] [:b :c :d]])
 
 (= (split-seq 2 [[1 2] [3 4] [5 6]]) [[[1 2] [3 4]] [[5 6]]])
+
+;; 55. cout occurrences
+
+(defn n55
+  [s]
+  (let [m (group-by identity s)
+        k (keys m)
+        v (map #(count %) (vals m))]
+    (zipmap k v)))
+
+(= (n55 [1 1 2 3 2 1 1]) {1 4, 2 2, 3 1})
+
+;; 56. find distinct item
+
+(defn n56
+  [s]
+  (let [h (fn [x e]
+            (if (some #(= e %) x)
+              x
+              (conj x e)))]
+    (reduce h [] s)))
+
+(= (n56 [1 2 1 3 1 2 4]) [1 2 3 4])
+
+(= (n56 '([2 4] [1 2] [1 3] [1 3])) '([2 4] [1 2] [1 3]))
+
+;; 58. function composition
+
+(defn n58
+  ([f g]
+   (fn
+     ([x] (f (g x)))
+     ([x & xs] (f (apply g x xs)))))
+  ([f g & fs]
+   (reduce n58 (list* f g fs))))
+
+(= [3 2 1] ((n58 rest reverse) [1 2 3 4]))
+
+(= 5 ((n58 (partial + 3) second) [1 2 3 4]))
+
+(= true ((n58 zero? #(mod % 8) +) 3 5 7 9))
 
 ;; 61. map contruction
 (defn map-con
@@ -507,6 +582,18 @@
       (#(odd? (count %)) fs))))
 
 (tree? [1 [2 [3 [4 false nil] nil] nil] nil])
+
+;; 96. beauty is symmetry
+
+(defn n96 [[_ l r]]
+  (if (not (coll? l))
+    true
+    (if (not (and (coll? r) (coll? r)))
+      false
+      (let [[lv ll lr] l
+            [rv rl rr] r]
+        (and (= lv rv) (n96 [nil ll rr]) (n96 [nil rl lr]))))))
+
 
 ;; 97. pascal triangle
 (defn pascal
@@ -879,5 +966,3 @@
    (let [[x y] [+ (range 3)]] (apply x y))
    (let [[[x y] b] [[+ 1] 2]] (x y b))
    (let [[x y] [inc 2]] (x y)))
-
-
