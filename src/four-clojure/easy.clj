@@ -447,22 +447,6 @@
 
 (= (n56 '([2 4] [1 2] [1 3] [1 3])) '([2 4] [1 2] [1 3]))
 
-;; 58. function composition
-
-(defn n58
-  ([f g]
-   (fn
-     ([x] (f (g x)))
-     ([x & xs] (f (apply g x xs)))))
-  ([f g & fs]
-   (reduce n58 (list* f g fs))))
-
-(= [3 2 1] ((n58 rest reverse) [1 2 3 4]))
-
-(= 5 ((n58 (partial + 3) second) [1 2 3 4]))
-
-(= true ((n58 zero? #(mod % 8) +) 3 5 7 9))
-
 ;; 61. map contruction
 (defn map-con
   "Return map construction"
