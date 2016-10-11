@@ -95,3 +95,42 @@
 
 
 (= (n67 5) [2 3 5 7 11])
+
+;; 74. filter perfect squares
+
+(defn n74
+  [s]
+  (let [l (->> (re-seq #"\d+" s)
+               (map read-string))
+        m #(int (Math/sqrt %))
+        p #(= % (* (m %) (m %)))]
+    (->> (filter p l)
+         (map str)
+         (interpose ",")
+         (apply str))))
+
+
+(= (n74 "4,5,6,7,8,9") "4,9")
+
+(= (n74 "15,16,25,36,37") "16,25,36")
+
+;; 77. anagram finder
+
+(defn n77
+  [s]
+  (let [f (fn p
+            [c]
+            (if (= 1 (count c))
+              (list c)
+              (for [h c
+                    t (p (disj (set c) h))]
+                (cons h t))))
+        g #(f %)]
+    (->> (seq s)
+         (map set))))
+
+(= (n77 ["meat" "mat" "team" "mate" "eat"])
+   #{#{"meat" "team" "mate"}})
+
+(= (n77 ["veer" "lake" "item" "kale" "mite" "ever"])
+   #{#{"veer" "ever"} #{"lake" "kale"} #{"mite" "item"}})
