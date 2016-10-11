@@ -1,14 +1,15 @@
 (ns four-clojure.hard)
 
-;; 53
+;; 53. longest increasing sub-seq
 
 (defn n53
-  [[x & xs]]
-  (if (nil? xs)
-    []
-    (if (= (first xs) (inc x))
-      (cons [x (first xs)] (n53 xs))
-      (n53 (next xs)))))
+  [s]
+  (->> (partition 2 1 s)
+       (partition-by #(< (first %) (last %)))
+       (map flatten)
+       (map distinct)
+       (filter #(< (first %) (last %)))
+       (reduce #(if (>= (count %) (count %2)) % %2) [])))
 
 (= (n53 [1 0 1 2 3 0 4 5]) [0 1 2 3])
 
@@ -17,24 +18,3 @@
 (= (n53 [2 3 3 4 5]) [3 4 5])
 
 (= (n53 [7 6 5 4]) [])
-
-(defn n53
-  [xs]
-  (loop [t []
-         a (inc (first xs))
-         b (second xs)
-         s (drop 2 xs)]
-    (if s
-      (if (= a b)
-        (recur (conj t a b)
-               (first s)
-               (second s)
-               (drop 2 s))
-        (recur t
-               (first s)
-               (second s)
-               (drop 2 s)))
-      t)))
-
-
-

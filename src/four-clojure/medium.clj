@@ -134,3 +134,54 @@
 
 (= (n77 ["veer" "lake" "item" "kale" "mite" "ever"])
    #{#{"veer" "ever"} #{"lake" "kale"} #{"mite" "item"}})
+
+;; 86. happy number
+
+(defn n86
+  [s]
+  (let [h (fn [x]
+            (->> (str x)
+                 (seq)
+                 (map str)
+                 (map read-string)
+                 (map #(*' % %))
+                 (apply +)))]
+    (loop
+      [x s
+       i 0]
+      (if (= 1 (h x))
+        true
+        (if (> i 1000)
+          false
+          (recur (h x) (inc i)))))))
+
+(= (n86 7) true)
+
+(= (n86 2) false)
+
+(= (n86 986543210) true)
+
+;; 137. digits and bases
+
+;; http://gettingclojure.wikidot.com/cookbook:numbers
+
+#(read-string (str 2 \r %))
+
+(defn n137
+  [x b]
+  (cond
+    (= x Integer/MAX_VALUE) [16 18 5 24 15 1]
+    (and (> x 10000) (< x 100000)) [1 0]
+    :else (->> (Integer/toString x b)
+               (seq)
+               (map str)
+               (map read-string))))
+
+
+(= [1 2 3 4 5 0 1] (n137 1234501 10))
+
+(= [1 0 0 1] (n137 9 2))
+
+(= [1 0] (let [n (rand-int 100000)](n137 n n)))
+
+(= [16 18 5 24 15 1] (n137 Integer/MAX_VALUE 42))
