@@ -34,13 +34,28 @@
 
 ;; 59. juxt
 
-(defn n59 juxt)
+(defn n59
+  ([f] (fn
+         ([x] (cons (f x) []))
+         ([x & xs] (cons (apply f x xs) []))))
+  ([f & fs]
+   (fn
+     ([x] (cons (f x) (if fs
+                        ((apply n59 fs) x)
+                        (vector (f x)))))
+     ([x & xs] (cons (apply f x xs) (if fs
+                                      (apply (apply n59 fs) x xs)
+                                      (vector (apply f x xs))))))))
 
-(= [21 6 1] ((n59 + max min) 2 3 5 1 6 4))
+(defn n59' [& f]
+  (fn [& x] (map #(apply % x) f)))
 
-(= ["HELLO" 5] ((n59 #(.toUpperCase %) count) "hello"))
 
-(= [2 6 4] ((n59 :a :c :b) {:a 2, :b 4, :c 6, :d 8 :e 10}))
+(= [21 6 1] ((n59' + max min) 2 3 5 1 6 4))
+
+(= ["HELLO" 5] ((n59' #(.toUpperCase %) count) "hello"))
+
+(= [2 6 4] ((n59' :a :c :b) {:a 2, :b 4, :c 6, :d 8 :e 10}))
 
 ;; 65. black box testing
 
