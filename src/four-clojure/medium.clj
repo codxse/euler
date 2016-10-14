@@ -84,7 +84,7 @@
 (defn n67
   [x]
   (let [f #(int (Math/sqrt %))
-        g #(if (zero? (rem % %2))
+        g #(if (and (> % 1) (zero? (rem % %2)))
             (if (= 1 %2) true false)
             (recur % (dec %2)))
         h #(g % (f %))]
@@ -135,6 +135,20 @@
 (= (n77 ["veer" "lake" "item" "kale" "mite" "ever"])
    #{#{"veer" "ever"} #{"lake" "kale"} #{"mite" "item"}})
 
+;; 80. perfect number
+
+(defn n80
+  [x]
+  (let [g #(zero? (rem x %))
+        a (filter g (range 1 x))]
+    (= x (apply + a))))
+
+(= (n80 6) true)
+
+(= (n80 7) false)
+
+(= (n80 496) true)
+
 ;; 86. happy number
 
 (defn n86
@@ -160,6 +174,35 @@
 (= (n86 2) false)
 
 (= (n86 986543210) true)
+
+;; 116. balanced prime
+
+(defn n116'
+  [x]
+  (let [f #(int (Math/sqrt %))
+        g #(if (and (> % 1) (zero? (rem % %2)))
+            (if (= 1 %2) true false)
+            (if (< % 2) false (recur % (dec %2))))
+        h #(g % (f %))]
+    (if (h x)
+      (->> (loop
+             [t (vector x) d x u x]
+             (cond
+               (< x 5) [2 3 5]
+               (= d u) (recur t (- d 2) (+ u 2))
+               (= 3 (count t)) t
+               (and (h d) (h u)) (conj t d u)
+               (h d) (recur (conj t d) 0 (+ u 2))
+               (h u) (recur (conj t u) (- d 2) 0)
+               :else (recur t (- d 2) (+ u 2))))
+           (#(= (first %) (/ (+ (second %) (last %)) 2))))
+      false)))
+
+(= true (n116' 563))
+
+(= false (n116' 4))
+
+(= false (n116' 5))
 
 ;; 137. digits and bases
 
