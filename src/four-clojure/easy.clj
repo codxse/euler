@@ -871,6 +871,48 @@
 
 (= 3 (dot-product [1 1 1] [1 1 1]))
 
+;; 146. trees into tables
+
+(defn n146
+  [m]
+  (let [f (fn [m]
+            (let [k (first (keys m))
+                  v (vals m)
+                  kv (apply concat (map keys v))
+                  vv (apply concat (map vals v))]
+              (map (fn [x y z]
+                     [[x y] z]) (repeat k) kv vv)))]
+    (->> (concat (map key m) (map val m))
+         (partition 2)
+         (#(if (= 1 (count %)) (partition-all 1 (first %)) %))
+         (apply map (fn [k v] {k v}))
+         (map f)
+         (apply concat)
+         (into {}))))
+
+(defn n146'
+  [m]
+  (->> (for [mp m
+             vl (val mp)
+             :let [ky (key vl)
+                   v (val vl)]]
+         (hash-map [(key mp) ky] v))
+       (apply merge)))
+
+(= (n146 '{a {p 1, q 2}
+           b {m 3, n 4}})
+   '{[a p] 1, [a q] 2
+     [b m] 3, [b n] 4})
+
+(= (n146 '{[1] {a b c d}
+           [2] {q r s t u v w x}})
+   '{[[1] a] b, [[1] c] d,
+     [[2] q] r, [[2] s] t,
+     [[2] u] v, [[2] w] x})
+
+(= (n146 '{m {1 [a b c] 3 nil}})
+   '{[m 1] [a b c], [m 3] nil})
+
 ;; 147. pascal's trapezoid
 
 (defn pascal-trapezoid
